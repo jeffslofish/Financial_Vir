@@ -9,3 +9,5 @@ Outisde of the NW.js setup, node.js is not used and is therefore not critical to
 
 #### Running in a Browser
 Download all the files, then simply open "main.html" in a browser and everything else will take care of itself.
+
+##### [To do list!](TODO.md)
