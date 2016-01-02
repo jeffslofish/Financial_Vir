@@ -5,3 +5,4 @@
 * customization of categories and sub-categories
 * tithing calculator
 * create a settings menu
+* exporting and importing of stored database
