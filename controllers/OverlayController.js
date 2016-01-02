@@ -4,26 +4,11 @@ function OverlayController(dom) {
     throw new Error('Invalid object passed!');
   }
   
-  this.dom = dom;
+  //  --- PUBLIC FUNCTIONS ---
   
-  function overlayClick(event) {
-    if (event.target === overlay.dom) {
-      overlay.hide();
-      if (typeof eventFunction === 'function') {
-        eventFunction();
-      }
-    }
-  }
-  
-  function overlayKeyPress(event) {
-    if (event.which === 27) {
-      overlay.hide();
-      if (typeof eventFunction === 'function') {
-        eventFunction();
-      }
-    }
-  }
-  
+  //  ==========================
+  //  DISPLAY
+  //  ==========================
   this.display = function(addEventListener, eventFunction) {
     this.dom.removeAttribute('style');
     
@@ -35,6 +20,10 @@ function OverlayController(dom) {
     
   };
   
+  
+  //  ==========================
+  //  SHOW TOP HEADERS
+  //  ==========================
   this.hide = function(callback) {
     this.dom.removeEventListener('click', overlayClick);
     document.removeEventListener('keyup', overlayKeyPress);
@@ -43,4 +32,36 @@ function OverlayController(dom) {
       element.setAttribute('style', 'display:none;');
     });
   };
+  
+  //  --- PRIVATE FUNCTIONS ---
+  
+  //  ==========================
+  //  OVERLAY CLICK
+  //  ==========================
+  function overlayClick(event) {
+    if (event.target === overlay.dom) {
+      overlay.hide();
+      if (typeof eventFunction === 'function') {
+        eventFunction();
+      }
+    }
+  }
+  
+  
+  //  ==========================
+  //  OVERLAY KEY PRESS
+  //  ==========================
+  function overlayKeyPress(event) {
+    if (event.which === 27) {
+      overlay.hide();
+      if (typeof eventFunction === 'function') {
+        eventFunction();
+      }
+    }
+  }
+  
+  //  --- ACTUAL EXECUTION ---
+  
+  this.dom = dom;
 }
+// ---------------------------------------------------------------------------------------

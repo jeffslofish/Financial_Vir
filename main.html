@@ -95,25 +95,30 @@
     </div>
     
     <script src="models/Entry.js"></script>
-    <script src="financesScript.js"></script>
     <script src="controllers/DataTableController.js"></script>
     <script src="controllers/DataEntryController.js"></script>
+    <script src="controllers/TithingController.js"></script>
     <script src="controllers/OverlayController.js"></script>
     <script src="controllers/MenuController.js"></script>
     <script src="controllers/DataBaseController.js"></script>
-    <script src="services/calculateCategoryData.js"></script>
     <script src="controllers/LoadingController.js"></script>
     <script src="controllers/DetailsTableController.js"></script>
-    <!-- <script src="loadData.js"></script> -->
+    
+    <script src="services/extras.js"></script>
+    <script src="services/calculateCategoryData.js"></script>
+    
+    <script src="services/init.js"></script>
     
     <script>
     
     // so that I can do element.children.forEach()
     HTMLCollection.prototype.forEach = Array.prototype.forEach;
     NodeList.prototype.forEach = Array.prototype.forEach;
-    Object.prototype.forEach = Array.prototype.forEach;
+    // Object.prototype.forEach = Array.prototype.forEach;
     
+    //Container to hold all the controllers
     var controllers = {};
+    // Container to hold all the calculations
     var calculations = {};
     
     init(controllers, calculations);

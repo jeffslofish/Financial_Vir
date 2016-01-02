@@ -1,9 +1,18 @@
+
+
+
 function DataTableController(dom, passedHeaders) {
   if (typeof dom !== 'object' || typeof passedHeaders !== 'object') {
     console.log(arguments);
     throw new Error('Mising construction parameters!');
   }
   
+  
+  //  --- PUBLIC FUNCTIONS ---
+  
+  //  ==========================
+  //  ADD ALL ROWS
+  //  ==========================
   this.addAllRows = function(entryArray) {
     var that = this;
     entryArray.forEach( function(entry) {
@@ -11,6 +20,10 @@ function DataTableController(dom, passedHeaders) {
     });
   };
   
+  
+  //  ==========================
+  //  ADD ROW
+  //  ==========================
   this.addRow =  function(entry) {
     if (!entry) {
       throw new Error('Missing entry!');
@@ -29,7 +42,9 @@ function DataTableController(dom, passedHeaders) {
   };
   
   
-  
+  //  ==========================
+  //  FILTER ROWS
+  //  ==========================
   this.filterRows = function(filterTo, columnIndex, createButton) {
     var that = this;
     
@@ -84,6 +99,9 @@ function DataTableController(dom, passedHeaders) {
   };
   
   
+  //  ==========================
+  //  SHOW ALL ROWS
+  //  ==========================
   this.showAllRows = function() {
     var rows = this.dom.rows;
     
@@ -92,6 +110,12 @@ function DataTableController(dom, passedHeaders) {
     });
   };
   
+  
+  //  --- PRIVATE FUNCTIONS ---
+  
+  //  ==========================
+  //  DISPLAY HEADERS
+  //  ==========================
   function displayHeaders() {
     if (!((headerRow = this.dom.rows[0]) && headerRow.className === 'headerRow')) {
       headerRow = this.dom.insertRow(0);
@@ -110,6 +134,10 @@ function DataTableController(dom, passedHeaders) {
     });
   }
   
+  
+  //  ==========================
+  //  FORMAT TEXT
+  //  ==========================
   function formatText(text, columnName) {
     if (text === undefined || typeof columnName !== 'string') {
       throw new Error('Missing parameters!');
@@ -129,6 +157,10 @@ function DataTableController(dom, passedHeaders) {
     }  
   }
   
+  
+  //  ==========================
+  //  CREATE CELL
+  //  ==========================
   function createCell(cellText, columnName) {
     var newCell = document.createElement('td');
     if (columnName === 'Amount') {
@@ -149,6 +181,9 @@ function DataTableController(dom, passedHeaders) {
   }
   
   
+  //  ==========================
+  //  ADD EVENT LISTENER
+  //  ==========================
   function addDataTableEventListener() {
     var that = this;
     this.dom.addEventListener('click', function dataTableClickEvent(event) {
@@ -173,15 +208,18 @@ function DataTableController(dom, passedHeaders) {
   }
   
   
-  // =================================
-  // ACTUAL EXECUTION
-  // =================================
+  //  --- ACTUAL EXECUTION ---
   this.dom = dom;
   this.headers = passedHeaders;
   displayHeaders.apply(this);
   addDataTableEventListener.apply(this);
 }
+// ---------------------------------------------------------------------------------------
 
+
+//  ==========================
+//  TO MY DATE STRING
+//  ==========================
 Date.prototype.toMyDateString = function() {
   monthName = function(monthNum, option) {
     var monthAbbreviations = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -195,11 +233,5 @@ Date.prototype.toMyDateString = function() {
     }
   };
   return monthName(this.getMonth()) + ' ' + this.getDate() + ', ' + this.getFullYear();
-};
-
-
-Number.prototype.toMyCurrencyString = function() {
-  // Reg expression thanks to http://stackoverflow.com/users/28324/elias-zamaria
-  return this.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 

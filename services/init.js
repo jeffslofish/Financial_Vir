@@ -32,24 +32,26 @@ function prepareCategoryCalculations(calc) {
   return obj;
 }
 
-function init(controllers, calculations) {
+
+//  ==========================
+//  INITIALIZE
+//  ==========================
+function init(controllers, calculations, callback) {
   
-  /**
-   * loads all the controllers
-   * @param {object} controllers  the container of all controllers
-   * @param {object} calc  the container of calculations
-   * 
-   * The order that these are loaded in is important because some of of them are dependent on the others.
-   */
+  
+  //  ==========================
+  // LOAD CONTROLLERS
   function loadOtherControllers(controllers, calc) {    
     
     // Data Table
     controllers.dataTable = new DataTableController(document.getElementById('dataTable'), controllers.database.organization.Columns);
-    
     controllers.dataTable.addAllRows(controllers.database.entries);
     
     // New Entry
     controllers.newEntry = new DataEntryController(document.getElementById('overlayNewEntry'), controllers.database.organization, controllers.overlay);
+    
+    // Tithing Calculator
+    controllers.tithing = new TithingController(document.getElementById('tithingOwe'), calc);
     
     // Main Menu
     controllers.mainMenu = new MenuController(document.getElementById('mainMenu'), controllers.database.organization, controllers.dataTable, controllers.newEntry);
@@ -62,12 +64,9 @@ function init(controllers, calculations) {
     // controllers.monthData = new DetailsTableController(document.getElementById('monthDataWrapper'), prepareMonthCalculations(calc));
   }
   
-  /**
-   * loads the controllers needed for the loading screen
-   * @param {object} controllers  the object to append the controllers to
-   * 
-   * The order that these are loaded in is important because some of of them are dependent on the others.
-   */
+  
+  //  ==========================
+  //  LOAD LOADING CONTROLLERS
   function loadLoadingControllers(controllers) {
     // Overlay
     controllers.overlay = new OverlayController(document.getElementById('overlay'));
@@ -76,23 +75,28 @@ function init(controllers, calculations) {
     controllers.loading = new LoadingController(document.getElementById('overlayLoading'), controllers.overlay);
   }
   
+  //  --- ACTUAL EXECUTION ---
   
+  // load the controllers that are necessary before initialization
   loadLoadingControllers(controllers);
   controllers.loading.display();
   controllers.database = new DatabaseController();
   
-  controllers.database.initializeDatabase(function(numEntries) {
-    calculations = calculateCategoryData(controllers.database);
-    loadOtherControllers(controllers, calculations);
+  // initialize!
+  controllers.database.initializeDatabase( function(numEntries) {
+    calculations.category = calculateCategoryData(controllers.database);
+    loadOtherControllers(controllers, calculations.category);
     controllers.loading.hide();
+    
     if (numEntries === 0) {
       newUserPrompt(controllers.overlay, controllers.newEntry);
+    }
+    if (typeof callback === 'function') {
+      callback();
     }
   });
   
 }
-
-
 
 
 

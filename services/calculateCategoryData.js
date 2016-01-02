@@ -128,12 +128,3 @@ function calculateCategoryData(databaseController) {
   
   return finishedObject;
 }
-
-Number.prototype.roundToTwoDPoints = function() {
-  if (isNaN(this)) {
-    console.log(this);
-    console.dir(this);
-    throw new Error('Not a number!');
-  }
-  return Math.round((this + 0.00001) * 100) / 100;
-};

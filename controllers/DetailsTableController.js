@@ -4,6 +4,30 @@ function DetailsTableController(name, dom, passedCalculations) {
     throw new Error('Invalid construction parameters!');
   }
   
+  
+  //  --- PUBLIC FUNCTIONS ---
+  
+  //  ==========================
+  //  UPDATE
+  //  ==========================
+  this.update = function(passedCalculations) {
+    if (typeof passedCalculations !== 'object' || passedCalculations.primaryData === undefined || passedCalculations.secondaryData === undefined) {
+      throw new Error('Invalid calculations!');
+    }
+    primary = passedCalculations.primaryData;
+    secondary = passedCalculations.secondaryData;
+    while (this.dom.rows.length > 1) {
+      this.dom.deleteRow(1);
+    }
+    populateRows.call(this);
+  };
+  
+  
+  //  --- PRIVATE FUNCTIONS ---
+  
+  //  ==========================
+  //  SHOW TOP HEADERS
+  //  ==========================
   function showTopHeaders() {
     var headerRow = document.createElement('TR');
     headerRow.innerHTML = '<th>' + name + '</th>';
@@ -21,11 +45,19 @@ function DetailsTableController(name, dom, passedCalculations) {
     this.dom.appendChild(headerRow);
   }
   
+  
+  //  ==========================
+  //  POPULATE ALL
+  //  ==========================
   function populate() {
     showTopHeaders.call(this);
     populateRows.call(this);
   }
   
+  
+  //  ==========================
+  //  POPULATE ROWS
+  //  ==========================
   function populateRows() {
     for (var key in primary) {
       if (primary.hasOwnProperty(key)) {
@@ -64,27 +96,24 @@ function DetailsTableController(name, dom, passedCalculations) {
     }
   }
   
-  this.update = function(passedCalculations) {
-    if (typeof passedCalculations !== 'object' || passedCalculations.primaryData === undefined || passedCalculations.secondaryData === undefined) {
-      throw new Error('Invalid calculations!');
-    }
-    primary = passedCalculations.primaryData;
-    secondary = passedCalculations.secondaryData;
-    while (this.dom.rows.length > 1) {
-      this.dom.deleteRow(1);
-    }
-    populateRows.call(this);
-  };
-  
+  //  ==========================
+  //  DATA MEMBERS
+  //  ==========================
   this.dom = dom.querySelector('.primaryTable');
   this.seconaryTable = dom.querySelector('.secondaryTable');
+  
+  // --- ACTUAL EXECUTION ---
+  
   var primary = passedCalculations.primaryData;
   var seoncdary = passedCalculations.secondaryData;
   populate.call(this);
 }
+// ---------------------------------------------------------------------------------------
 
 
 /*
+FORMAT:
+
 passedCalculations {
   key: {
     amount: ,
@@ -97,6 +126,10 @@ passedCalculations {
 }
 */
 
+
+//  ==========================
+//  TO PERCENT
+//  ==========================
 Number.prototype.toPercent = function() {
   var fixThis = Number(this);
   if (isNaN(fixThis) === true) {

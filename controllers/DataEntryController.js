@@ -130,10 +130,10 @@ function DataEntryController(dom, org, overlayController, databaseController) {
   this.org = org;
   
   
-  // EXECUTION
+  // --- ACTUAL EXECUTION ---
   this.populate();
 }
-// ==================================================================
+// ---------------------------------------------------------------------------------------
 
 
 
@@ -251,15 +251,9 @@ function handleFormInput(form, databaseController, newEntryController, dataTable
     newEntryController.hide();
     dataTableController.addRow(addThis);
     
-    // ==============================================
-    // TODO: fix this
-    // it's a terrible way to do it
-    // ==============================================
-    
     controllers.database.entries.push(addThis);
     calculations = calculateCategoryData(controllers.database);
     controllers.categoryData.update(prepareCategoryCalculations(calculations));
-    // console.log('yay!');
   }
   //
   // Execution!

@@ -3,6 +3,8 @@ function LoadingController(dom, overlayController) {
     throw new Error('Invalid construction parameters!');
   }
   
+  //  --- PUBLIC FUNCTIONS ---
+  
   // =================================
   // DISPLAY
   // =================================
@@ -19,9 +21,9 @@ function LoadingController(dom, overlayController) {
     overlay.hide();
   };
   
-  // =================================
-  // DATA MEMBERS
-  // =================================
+  //  --- ACTUAL EXECUTION ---
+  
   overlay = overlayController;
   this.dom = dom;
 }
+// ---------------------------------------------------------------------------------------

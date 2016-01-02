@@ -26,6 +26,8 @@ function MenuController(dom, org, dataTableController, newEntryController, setti
     that.newEntry.display();
   });
 }
+// ---------------------------------------------------------------------------------------
+
 
 
 
