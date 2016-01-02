@@ -4,3 +4,4 @@
 * editing and deletion of entries
 * customization of categories and sub-categories
 * tithing calculator
+* create a settings menu
