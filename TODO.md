@@ -2,7 +2,6 @@
 
 ##### In order of priority
 
-* tithing calculator
 * monthly expense calculator
 * make sure code is clean and consistent
 * editing and deletion of entries
