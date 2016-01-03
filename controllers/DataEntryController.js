@@ -31,7 +31,7 @@ function DataEntryController(dom, org, overlayController, databaseController) {
     var newEntryDiv = this.dom;
     newEntryDiv.innerHTML = 
       '<h2>Transaction Entry</h2>' +
-        '<form id="entryForm" action="javascript:handleFormInput(this.entryForm, controllers.database, controllers.newEntry, controllers.dataTable);">' +
+        '<form id="entryForm" action="javascript:handleFormInput(this.entryForm, controllers.database, controllers.newEntry, controllers.dataTable, controllers.tithing, controllers.categoryData, calculations);">' +
         '</form>';
     var entryForm = newEntryDiv.childNodes[1];
     
@@ -176,7 +176,8 @@ function resetAllInvalidFields(form) {
 // =================================
 // HANDLE FORM INPUT
 // =================================
-function handleFormInput(form, databaseController, newEntryController, dataTableController) {
+function handleFormInput(form, databaseController, newEntryController, dataTableController, tithingController, categoryDataTableController, calculations) {
+  console.log(arguments);
   var org = databaseController.organization;
   
   // Validate one object
@@ -251,9 +252,13 @@ function handleFormInput(form, databaseController, newEntryController, dataTable
     newEntryController.hide();
     dataTableController.addRow(addThis);
     
-    controllers.database.entries.push(addThis);
-    calculations = calculateCategoryData(controllers.database);
-    controllers.categoryData.update(prepareCategoryCalculations(calculations));
+    databaseController.entries.push(addThis);
+    // TODO: come up with a way to pass the calculations around without it being a global variable
+    //    perhaps make it a controller
+    calculations.category = calculateCategoryData(databaseController);
+    
+    tithingController.update(calculations.category);
+    categoryDataTableController.update(prepareCategoryCalculations(calculations.category));
   }
   //
   // Execution!

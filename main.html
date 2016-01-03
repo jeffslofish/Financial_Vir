@@ -88,7 +88,7 @@
         
       </div>
       
-      <div style="display: none" class="default" id="tithingOwe">
+      <div class="default" id="tithingOwe">
         $0.00
       </div>
       <br>
@@ -114,7 +114,7 @@
     // so that I can do element.children.forEach()
     HTMLCollection.prototype.forEach = Array.prototype.forEach;
     NodeList.prototype.forEach = Array.prototype.forEach;
-    // Object.prototype.forEach = Array.prototype.forEach;
+    Object.prototype.forEach = Array.prototype.forEach;
     
     //Container to hold all the controllers
     var controllers = {};

@@ -19,6 +19,21 @@ button {
   margin: 0 2px 0 2px;
 }
 
+.tithingOwe {
+  box-shadow: 2px 2px 4px rgba(255, 51, 51, 0.8); /* #F33 */
+  border: 5px solid #F33;
+  border-radius: 5px;
+  
+  margin: 0.5em auto;
+}
+
+.tithing {
+  padding: 0.2em 2em;
+  max-width: 100%;
+  font-weight: bold;
+}
+
+
 .block {
   display: block;
 }
