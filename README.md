@@ -16,6 +16,6 @@ I'll get back to this.
 
 #### Running in a Browser
 Download all the files, then simply open "main.html" in a browser and everything else will take care of itself. 
-Or go [here](electrovir.github.io/Financial_Vir) to use it in a browser with the current repo.
+Or go [here](http://electrovir.github.io/Financial_Vir) to use it in a browser with the current repo.
 
 ##### [To do list!](TODO.md)
