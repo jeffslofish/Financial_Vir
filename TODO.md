@@ -2,6 +2,8 @@
 
 ##### In order of priority
 
+* refactor with redux
+* refactor to work with Electron instead of NW.js
 * monthly expense calculator
 * make sure code is clean and consistent
 * editing and deletion of entries
