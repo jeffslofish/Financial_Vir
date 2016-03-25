@@ -1,6 +1,6 @@
 function Entry(copyThis) {
   this.dataObj = {
-    date: new Date(),
+    Date: new Date(),
     id: -1
   };
   // this.Created = new Date();

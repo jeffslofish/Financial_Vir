@@ -32,7 +32,11 @@ button {
   max-width: 100%;
   font-weight: bold;
 }
-
+.edit {
+  height: 10px;
+  font-size: .7em;
+  margin: 0;
+}
 
 .block {
   display: block;

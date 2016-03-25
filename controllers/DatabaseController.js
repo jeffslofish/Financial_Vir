@@ -28,7 +28,7 @@ function DatabaseController() {
   // =================================
   this.addEntry = function(addThis, callback) {
     if (typeof callback !== 'function') {
-      throw new Error('Invalid callback');
+      console.warn('No callback.');
     }
     
     function getLastId(database, storeName, innerCallback) {
@@ -54,6 +54,9 @@ function DatabaseController() {
       addThis.id = newId;
       var store = db.transaction([entryStoreName], 'readwrite').objectStore(entryStoreName);
       
+      //because you cannot store an object that has properties that are functions
+      addThis = stripFunctionMembers(addThis);
+      
       var request = store.add(addThis, newId);
       
       request.onerror = function(event) {
@@ -61,12 +64,65 @@ function DatabaseController() {
         throw new Error('Add failed!', event);
       };
       request.onsuccess = function(event) {
-        console.log('Add success!', 'ID:', event.target.result);
-        callback(addThis, event.target.result);
+        console.log('Add success!', 'Entry:', newId);
+        if (typeof callback === 'function') {
+          callback(addThis, event.target.result);
+        }
       };
       
       
     });
+  };
+  
+  function stripFunctionMembers(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key) && typeof obj[key] === 'function') {
+        delete obj[key];
+      }
+    }
+  }
+  
+  
+  
+  // =================================
+  // EDIT AN ENTRY
+  // =================================
+  this.editEntry = function(id, addThis, callback) {
+    if (typeof callback !== 'function') {
+      console.warn('No callback.');
+    }
+    
+    addThis.LastEdited = new Date();
+    
+    var request = db.transaction([entryStoreName], 'readwrite').objectStore(entryStoreName).add(addThis, id);
+    
+    request.onerror = function(event) {
+      console.log();
+      throw new Error('Edit failed!', event);
+    };
+    request.onsuccess = function(event) {
+      console.log('Add success!', 'ID:', event.target.result);
+      callback(addThis, event.target.result);
+    };
+  };
+  
+  
+  
+  // =================================
+  // REMOVE AN ENTRY
+  // =================================
+  this.removeEntry = function(id, callback) {
+    var request = db.transaction([entryStoreName], 'readwrite').objectStore(entryStoreName).delete(id);
+    
+    request.onerror = function(event) {
+      throw new Error('Remove failed!', event);
+    };
+    request.onsuccess = function(event) {
+      console.log('Remove success!', 'ID:', id, 'Event:', event);
+      if (typeof callback === 'function') {
+        callback(event);
+      }
+    };
   };
   
   

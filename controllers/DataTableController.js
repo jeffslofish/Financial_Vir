@@ -1,8 +1,5 @@
-
-
-
-function DataTableController(dom, passedHeaders) {
-  if (typeof dom !== 'object' || typeof passedHeaders !== 'object') {
+function DataTableController(dom, passedHeaders, databaseController) {
+  if (typeof dom !== 'object' || typeof passedHeaders !== 'object' || typeof databaseController !== 'object') {
     console.log(arguments);
     throw new Error('Mising construction parameters!');
   }
@@ -111,6 +108,16 @@ function DataTableController(dom, passedHeaders) {
   };
   
   
+  //  ==========================
+  //  EDIT A ROW
+  //  ==========================
+  this.editEntry = function(id) {
+    console.log('Editing entry', id);
+    console.log(this);
+    this.database.editEntry(id);
+    return;
+  };
+  
   //  --- PRIVATE FUNCTIONS ---
   
   //  ==========================
@@ -180,11 +187,20 @@ function DataTableController(dom, passedHeaders) {
     return newCell;
   }
   
+  //  ==========================
+  //  EDIT BUTTON CLICK
+  //  ==========================
+  function editButtonClick(event) {
+    var id = event.target.parentNode.parentNode.id;
+    
+    this.editEntry(id);
+  }
+  
   
   //  ==========================
   //  ADD EVENT LISTENER
   //  ==========================
-  function addDataTableEventListener() {
+  function addDataTableEventListeners() {
     var that = this;
     this.dom.addEventListener('click', function dataTableClickEvent(event) {
       var element = event.target;
@@ -199,20 +215,66 @@ function DataTableController(dom, passedHeaders) {
         if (columnHeaderName === 'Date') {
           // TODO: Date click thing
         }
+        else if (columnHeaderName === 'Amount') {
+          
+        }
         else {
           that.filterRows.call(that, filterText, clickedColumnIndex, true);
         }
       }
       event.stopPropagation();
     }, false);
+    
+    var lastCell = null;
+    var lastCellText = '';
+    
+    this.dom.addEventListener('mouseover', function hoverEdit(event) {
+      var cell;
+      if (event.target.tagName === 'TD') {
+        cell = event.target.parentNode.children[that.headers.indexOf('Amount')];
+      }
+      else if (event.target.tagName === 'TH') {
+        return;
+      }
+      else if (event.target.tagName === 'TR' && event.target.id !== 'headerRow') {
+        cell = event.target.children[that.headers.indexOf('Amount')];
+      }
+      else {
+        return;
+      }
+      
+      if (lastCell !== null) {
+        lastCell.innerHTML = lastCellText;
+      }
+      lastCell = cell;
+      lastCellText = cell.innerHTML;
+      
+      var button = document.createElement('button');
+      button.innerHTML = 'Edit';
+      button.setAttribute('class', 'edit');
+      button.addEventListener('click', editButtonClick.bind(that));
+      
+      cell.innerHTML = '';
+      cell.appendChild(button);
+    });
+    
+    
+    this.dom.addEventListener('mouseleave', function tableHoverExit(event) {
+      if (lastCell !== null) {
+        lastCell.innerHTML = lastCellText;
+        lastCell = null;
+        lastCellText = '';
+      }
+    });
   }
   
   
   //  --- ACTUAL EXECUTION ---
   this.dom = dom;
   this.headers = passedHeaders;
+  this.database = databaseController;
   displayHeaders.apply(this);
-  addDataTableEventListener.apply(this);
+  addDataTableEventListeners.apply(this);
 }
 // ---------------------------------------------------------------------------------------
 

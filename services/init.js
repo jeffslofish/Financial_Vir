@@ -44,7 +44,7 @@ function init(controllers, calculations, callback) {
   function loadOtherControllers(controllers, calc) {    
     
     // Data Table
-    controllers.dataTable = new DataTableController(document.getElementById('dataTable'), controllers.database.organization.Columns);
+    controllers.dataTable = new DataTableController(document.getElementById('dataTable'), controllers.database.organization.Columns, controllers.database);
     controllers.dataTable.addAllRows(controllers.database.entries);
     
     // New Entry
